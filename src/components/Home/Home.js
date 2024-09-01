@@ -181,7 +181,7 @@ const Home = () => {
                       </h6>
                       <p className="card-text">
                         <strong>Name:</strong> {donor.donor_name}<br />
-                        <strong>Email:</strong> {donor.donor_email}<br />
+                        <strong>Email:</strong> <a href={`mailto:${donor.donor_email}`}>{donor.donor_email}</a><br />
                         <strong>Phone:</strong> <a href={`tel:${donor.donor_phone}`}>{donor.donor_phone}</a>
                       </p>
                     </>
