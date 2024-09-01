@@ -19,7 +19,7 @@ const Header = () => {
           <button className="btn btn-primary" onClick={() => handleNavigation('/martyrs')}>Martyrs</button>
           <button className="btn btn-primary" onClick={() => handleNavigation('/donors')}>Donors</button>
           <button className="btn btn-primary" onClick={() => handleNavigation('/students')}>Students</button>
-          <button className="btn btn-primary" onClick={() => handleNavigation('/analytics')}>Analytics</button>
+          <button className="btn btn-primary" onClick={() => handleNavigation('/analytics')}>🔎</button>
         </div>
       </div>
     </header>
