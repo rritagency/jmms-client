@@ -31,7 +31,7 @@ const Martyrs = () => {
     <div className="container mt-4">
       <div className="d-flex justify-content-center align-items-center mb-4">
         <h1 className="mb-0">Martyrs</h1>
-        <span className="badge bg-primary fs-5 ms-2">{martyrs.length} Total</span>
+        <span className="badge bg-secondary fs-5 ms-2">{martyrs.length} Total</span>
       </div>
       <table className="table table-striped table-bordered">
         <thead className="thead-dark">

@@ -206,13 +206,16 @@ const Home = () => {
                     <button className="btn btn-secondary btn-sm ms-2" onClick={() => handleEditScl(scholarship)}>Edit</button>
                   </h6>
                   <p className="card-text">
+                  <strong>Donor ID:</strong> {scholarship.donor_id}
+                  </p>
+                  <p className="card-text">
                   <strong>Amount:</strong> {scholarship.monthly_amount} BDT
                   </p>
                   <p className="card-text">
                     <strong>Status:</strong> {scholarship.status}
                   </p>
                   <p className="card-text">
-                      <strong>Last Disbursement:</strong> {lastDisbursement.date}
+                      <strong>Last Disb:</strong> {lastDisbursement.date}
                   </p>
 
                   <button 
@@ -238,6 +241,16 @@ const Home = () => {
               </div>
               <div className="modal-body">
                 <form>
+                  <div className="mb-3">
+                    <label htmlFor="donor-id" className="form-label">Donor ID</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="donor-id"
+                      value={currentScholarship.donor_id}
+                      onChange={(e) => setCurrentScholarship({ ...currentScholarship, donor_id: parseInt(e.target.value, 10)})}
+                    />
+                  </div>
                   <div className="mb-3">
                     <label htmlFor="status" className="form-label">Status</label>
                     <select

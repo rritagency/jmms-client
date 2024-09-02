@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 
 const Donors = () => {
   const [donors, setDonors] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [newDonor, setNewDonor] = useState({
+    donor_name: '',
+    donor_email: '',
+    donor_phone: ''
+  });
 
   useEffect(() => {
     fetch('https://jmms-server.vercel.app/donors')
@@ -11,13 +17,11 @@ const Donors = () => {
   }, []);
 
   const handleDelete = (id) => {
-    // Optional: Make a DELETE request to the server
     fetch(`https://jmms-server.vercel.app/donors/${id}`, {
       method: 'DELETE',
     })
     .then(response => {
       if (response.ok) {
-        // Remove donor from the local state
         setDonors(donors.filter(donor => donor.id !== id));
       } else {
         console.error('Failed to delete donor');
@@ -26,11 +30,36 @@ const Donors = () => {
     .catch(error => console.error('Error deleting donor:', error));
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewDonor({ ...newDonor, [name]: value });
+  };
+
+  const handleSubmit = () => {
+    fetch('https://jmms-server.vercel.app/donors', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newDonor)
+    })
+    .then(response => response.json())
+    .then(data => {
+      setDonors([...donors, data]);
+      setShowModal(false);
+      setNewDonor({ donor_name: '', donor_email: '', donor_phone: '' });
+    })
+    .catch(error => console.error('Error adding donor:', error));
+  };
+
   return (
     <div className='container mt-4'>
       <div className='d-flex justify-content-center align-items-center mb-4'>
         <h1 className='mb-0'>Donors</h1>
-        <span className='badge bg-primary fs-5 ms-4'>{donors.length} Total</span>
+        <span className='badge bg-secondary fs-5 ms-4'>{donors.length} Total</span>
+        <button className='btn btn-primary ms-4' onClick={() => setShowModal(true)}>
+          Add New
+        </button>
       </div>
 
       <table className='table table-striped table-bordered'>
@@ -40,7 +69,7 @@ const Donors = () => {
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Action</th> {/* Add Action column */}
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -57,11 +86,68 @@ const Donors = () => {
                 >
                   Delete
                 </button>
-              </td> {/* Delete button */}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Modal */}
+      {showModal && (
+        <div className='modal show d-block' role='dialog'>
+          <div className='modal-dialog'>
+            <div className='modal-content'>
+              <div className='modal-header'>
+                <h5 className='modal-title'>Add New Donor</h5>
+                <button type='button' className='btn-close' onClick={() => setShowModal(false)}></button>
+              </div>
+              <div className='modal-body'>
+                <div className='mb-3'>
+                  <label htmlFor='donor_name' className='form-label'>Name</label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    id='donor_name'
+                    name='donor_name'
+                    value={newDonor.donor_name}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className='mb-3'>
+                  <label htmlFor='donor_email' className='form-label'>Email</label>
+                  <input
+                    type='email'
+                    className='form-control'
+                    id='donor_email'
+                    name='donor_email'
+                    value={newDonor.donor_email}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className='mb-3'>
+                  <label htmlFor='donor_phone' className='form-label'>Phone</label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    id='donor_phone'
+                    name='donor_phone'
+                    value={newDonor.donor_phone}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className='modal-footer'>
+                <button type='button' className='btn btn-secondary' onClick={() => setShowModal(false)}>
+                  Cancel
+                </button>
+                <button type='button' className='btn btn-primary' onClick={handleSubmit}>
+                  Save Donor
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
